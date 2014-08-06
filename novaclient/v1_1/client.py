@@ -30,6 +30,7 @@ from novaclient.v1_1 import fping
 from novaclient.v1_1 import hosts
 from novaclient.v1_1 import hypervisors
 from novaclient.v1_1 import images
+from novaclient.v1_1 import introspection
 from novaclient.v1_1 import keypairs
 from novaclient.v1_1 import limits
 from novaclient.v1_1 import networks
@@ -155,6 +156,7 @@ class Client(object):
         self.availability_zones = \
             availability_zones.AvailabilityZoneManager(self)
         self.server_groups = server_groups.ServerGroupsManager(self)
+        self.introspection = introspection.IntrospectionManager(self)
 
         # Add in any extensions...
         if extensions:
