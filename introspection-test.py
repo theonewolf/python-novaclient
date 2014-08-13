@@ -39,6 +39,8 @@ if __name__ == '__main__':
               'URL "%s"', user, tenant, url)
     c = client.Client(user, pw, tenant, url, service_type='compute')
 
+    print c.servers.list()[0].to_dict()
+
     try_call(c.introspection.list, instance)
     try_call(c.introspection.get, instance, entity)
     try_call(c.introspection.create, instance, disk='virtio0')
