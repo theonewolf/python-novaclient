@@ -38,7 +38,7 @@ class IntrospectionManager(base.ManagerWithFind):
                          'introspection_entity')
 
     def create(self, instance_id, **kwargs):
-        body = {'introspected_entity' : kwargs}
+        body = {'introspection_entity' : kwargs}
         return self._create('/servers/%s/os-introspection' % instance_id,
                             body, 'introspection_entity')
 
