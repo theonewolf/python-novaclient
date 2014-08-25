@@ -43,5 +43,6 @@ if __name__ == '__main__':
 
     try_call(c.introspection.list, instance)
     try_call(c.introspection.get, instance, entity)
-    try_call(c.introspection.create, instance, disk='virtio0')
+    try_call(c.introspection.create, instance, drive_id='virtio0',
+                                               introspection_target='gammaray')
     try_call(c.introspection.delete, instance, entity)
