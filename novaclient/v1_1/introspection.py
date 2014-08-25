@@ -21,14 +21,9 @@ from novaclient import base
 
 
 class IntrospectionInterface(base.Resource):
-    def __init__(self, manager, data):
-        self.drive_id = data['drive_id']
-        self.target = data['target']
-        self.id = data['introspected_entity_id']
-
     def __repr__(self):
         return 'IntrospectedEntity <drive_id="%s", target="%s", id="%s">' % \
-               (self.drive_id, self.target, self.id)
+               (self.drive_id, self.target, self.introspected_entity_id)
 
 
 class IntrospectionManager(base.ManagerWithFind):
