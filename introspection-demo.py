@@ -41,7 +41,7 @@ def print_section(section, **kwargs):
 
 def print_tabbed(lines):
     lines = ''.join(['\t%s\n' % (l) for l in  lines.split('\n')])
-    print lines
+    print lines,
 
 def activate_introspection(client, instance):
     entity = client.introspection.create(instance, drive_id='virtio0',
@@ -55,7 +55,13 @@ def activate_introspection(client, instance):
 def assign_public_ip(client, instance_id, ip):
     client.servers.add_floating_ip(instance_id, ip)
 
-def ssh_to_instance(ip):
+    while ssh_to_instance(ip, 'sync') != 0:
+        sleep(3)
+        print '\tTrying ssh...'
+
+    print '\tSSH Succeeded!'
+
+def ssh_to_instance(ip, command=None):
     CMD = ['ssh']
     CMD.append('ubuntu@%s' % (ip))
     CMD.append('-i')
@@ -65,7 +71,10 @@ def ssh_to_instance(ip):
     CMD.append('-o')
     CMD.append('StrictHostKeyChecking=no')
 
-    call(CMD)
+    if command != None:
+        CMD.append(command)
+
+    return call(CMD)
 
 def poll_instance_status(client, instance_id):
     status = None
@@ -74,7 +83,7 @@ def poll_instance_status(client, instance_id):
         sleep(3)
         server = client.servers.get(instance_id)
         status = server.status
-        print status
+        print '\t%s' % (status)
 
     host = getattr(server, 'OS-EXT-SRV-ATTR:hypervisor_hostname')
     host = host.split('.')[0]
