@@ -44,7 +44,6 @@ def print_tabbed(lines):
     print lines
 
 def activate_introspection(client, instance):
-    print_section('Activating Introspection', instance=instance)
     entity = client.introspection.create(instance, drive_id='virtio0',
                         introspection_target='gammaray').introspected_entity_id
 
@@ -77,8 +76,9 @@ def poll_instance_status(client, instance_id):
         status = server.status
         print status
 
-    print_section('Assigned Hypervisor Host',
-                  host=getattr(server, 'OS-EXT-SRV-ATTR:hypervisor_hostname'))
+    host = getattr(server, 'OS-EXT-SRV-ATTR:hypervisor_hostname')
+    host = host.split('.')[0]
+    return host
 
 def start_instance(client, name, image, flavor, keypair):
     server = client.servers.create(name=name,
@@ -105,13 +105,16 @@ if __name__ == '__main__':
     instance = start_instance(c, NAME, IMAGE, FLAVOR, KEYPAIR)
     
     print_section('Wait for Instance Boot', instance=instance)
-    poll_instance_status(c, instance)
+    host = poll_instance_status(c, instance)
 
     print_section('Assigning Public IP', ip=PUBLIC_IP)
     assign_public_ip(c, instance, PUBLIC_IP)
 
     print_section('Activate Introspection', instance=instance)
     activate_introspection(c, instance)
+
+    print_section('Introspection URL',
+            URL='http://crimson.aura.cs.cmu.edu:8000/%s/%s' % (host, instance))
 
     print_section('SSHing to Instance', ip=PUBLIC_IP)
     ssh_to_instance(PUBLIC_IP)
