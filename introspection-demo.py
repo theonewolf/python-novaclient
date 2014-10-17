@@ -110,8 +110,8 @@ if __name__ == '__main__':
     print_section('Connected to OpenStack Controller')
     im_name = get_image_name(c, IMAGE)
     
-    print_section('Spawning Instance', image=im_name, name=NAME)
     instance = start_instance(c, NAME, IMAGE, FLAVOR, KEYPAIR)
+    print_section('Spawning Instance', image=im_name, name=NAME)
     
     print_section('Wait for Instance Boot', instance=instance)
     host = poll_instance_status(c, instance)
